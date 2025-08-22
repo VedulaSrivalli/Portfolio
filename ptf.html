@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vedula Srivalli – Web Developer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background: #1e1e1e;
+      color: #eee;
+    }
+    body.dark .skill-card, body.dark .certificate-card, body.dark .card {
+      background: #2a2a2a; /* dark card background */
+      color: #eee;         /* light text */
+      box-shadow: 0 4px 8px rgba(255,255,255,0.05); /* subtle shadow for dark */
+    }
+
+    body.dark .certificate-card a {
+      color: #fbbf24;        /* make link visible in dark mode */
+      border-color: #fbbf24;
+    }
+
+    body.dark .certificate-card a:hover {
+      background: #fbbf24;
+      color: #000;
+    }
+
+    body.dark .skill-card p, body.dark .card p, body.dark .card h3, body.dark .certificate-card h3, body.dark .certificate-card p {
+     color: #eee;
+    }
+
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #fbbf24;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      z-index: 999;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center; 
+      gap: 0.5rem;
+    }
+
+    .logo {
+      width: 36px;      
+      height: 36px;
+    }
+
+    .logo-text {
+      font-weight: bold;
+      font-size: 1.2rem; 
+      color: #000;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 100px 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    #hero {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     background: url('background.jpg') no-repeat center center/cover;
+     color: #fff;
+     padding: 4rem 2rem;
+     margin-top: 70px; /* push below header */
+     position: relative;
+     z-index: 1;
+   }
+
+
+    #hero::before {
+     content: "";
+     position: absolute;
+     top: 0; left: 0;
+     width: 100%;
+     height: 100%;
+     background: rgba(0, 0, 0, 0.5); /* dark overlay */
+     z-index: -1;
+    }
+
+    #about {
+     padding: 4rem 2rem;
+     max-width: 800px;
+     margin: auto;
+     text-align: center;
+    }
+
+    #about h2 {
+     font-size: 2rem;
+     margin-bottom: 1rem;
+     color: #fbbf24;
+    }
+
+    #about p {
+     font-size: 1.1rem;
+     line-height: 1.6;
+     color: inherit;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #fbbf24;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      margin: 0.5rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .btn {
+      background: #fbbf24;
+      color: #000;
+    }
+
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .skills li {
+      background: #fff3cd;
+      padding: 1rem;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      font-weight: bold;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .skill-card {
+     background: #fff3cd;
+     border-radius: 10px;
+     padding: 1rem;
+     text-align: center;
+     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+     transition: transform 0.3s ease;
+    }
+
+    .skill-card img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-card p {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .certificate-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .certificate-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      height: 100%; /* ensures full height grid behavior */
+    }
+
+    .certificate-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .certificate-card p {
+      min-height: 60px; /* adjust as needed */
+      margin-bottom: 1rem;
+    }
+
+    .certificate-card a {
+      display: inline-block;
+      margin-top: auto;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+      border: 1px solid #007bff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .certificate-card a:hover {
+      background: #007bff;
+      color: white;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+     }
+
+     .card img {
+      width: 100%;
+      height: 200px; /* or 250px depending on your layout */
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+     }
+
+    form input, form textarea {
+      padding: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    form button {
+      padding: 1rem;
+      background: #fbbf24;
+      border: none;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .social a {
+      margin-right: 1rem;
+      font-size: 1.5rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .social-logos {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+
+    .social-logos a img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: grayscale(30%);
+    }
+
+    .social-logos a:hover img {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    .social-logos a img {
+      transition: filter 0.3s ease;
+    }
+
+    body.dark .social-logos a img {
+      filter: invert(100%) grayscale(0%);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #fff;
+      margin-top: 4rem;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+       <circle cx="50" cy="50" r="48" fill="#000" />
+       <text x="50%" y="55%" font-size="45" font-family="Segoe UI, sans-serif" fill="#fff" text-anchor="middle" dominant-baseline="middle" font-weight="bold">VS</text>
+      </svg>
+      <span class="logo-text">Srivalli</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#certificates">Certificates</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="theme-toggle">🌓</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <img src="cropped_circle_image.png" alt="Vedula Srivalli" class="profile-pic" />
+    <div class="content">
+      <h1>Hello, I'm <span class="highlight">Vedula Srivalli</span></h1>
+      <h2><span id="typed-text"></span></h2>
+      <p>Final year B.Tech student passionate about web development, AI/ML, and solving real-world problems.</p>
+      <div class="button-group">
+        <a href="#contact" class="btn">Contact Me</a>
+        <a href="resume.pdf" class="btn" download>Download Resume</a>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about">
+   <h2>About Me</h2>
+    <p>
+    Hi! I'm <strong>Vedula Srivalli</strong>, a final-year B.Tech student passionate about web development, AI/ML, and  creating real-world solutions through technology. 
+    I love learning new programming languages, building interactive web applications, and exploring AI projects that can make a difference. 
+    My goal is to continuously improve my skills and contribute to impactful projects.
+    </p>
+  </section>
+
+  <section id="skills">
+  <h2>Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+      <p>HTML</p>
+    </div>
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+      <p>CSS</p>
+    </div>
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+      <p>JavaScript</p>
+    </div>
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+      <p>Python</p>
+    </div>
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+      <p>Java</p>
+    </div>
+    <div class="skill-card">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C">
+      <p>C</p>
+    </div>
+   </div>
+
+  </section>
+
+  <section id="certificates">
+    <h2>Certificates</h2>
+    <div class="certificate-grid">
+      <div class="certificate-card">
+        <img src="codsoft.jpg" alt="Certificate 1">
+        <h3>Web Development</h3>
+        <p>Completed internship using HTML, CSS, JavaScript.</p>
+        <a href="codsoft-certificate.pdf" download>Download PDF</a>
+      </div>
+      <div class="certificate-card">
+        <img src="excelr.jpg" alt="Certificate 2">
+        <h3>Web Development</h3>
+        <p>Completed another internship using HTML, CSS, JavaScript with the help of ExcelR Pvt.Ltd.</p>
+        <a href="excelr-certificate.pdf" download>Download PDF</a>
+      </div>
+      <div class="certificate-card">
+        <img src="cyberthreya.jpg" alt="Certificate 3">
+        <h3>Ethical Hacking</h3>
+        <p>Basics of Ethical Hacking training.</p>
+        <a href="cyberthreya-certificate.pdf" download>Download PDF</a>
+      </div>
+      <div class="certificate-card">
+        <img src="googlecloud.jpg" alt="Certificate 4">
+        <h3>Generative AI</h3>
+        <p>45-hour online course in Generative AI by Google Cloud.</p>
+        <a href="googlecloud-certificate.pdf" download>Download PDF</a>
+      </div>
+      <div class="certificate-card">
+        <img src="infosys.jpg" alt="Certificate 5">
+        <h3>Mean Stack Web Development</h3>
+        <p> Hands-On MEAN Stack Web Development course.</p>
+        <a href="infosys-certificate.pdf" download>Download PDF</a>
+      </div>
+      <div class="certificate-card">
+        <img src="nptel.jpg" alt="Certificate 6">
+        <h3>Database Management System</h3>
+        <p> Database Management System course from NPTEL.</p>
+        <a href="nptel-certificate.pdf" download>Download PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+  <h2>Projects</h2>
+  <div class="portfolio-grid">
+    <div class="card">
+      <img src="tic-tac-toe.png" alt="Tic Tac Toe Game">
+      <h3>Tic Tac Toe Game</h3>
+      <p>A web-based interactive Tic Tac Toe game built with HTML, CSS, and JavaScript.</p>
+    </div>
+    <div class="card">
+      <img src="sign-language.png" alt="Sign Language Recognition">
+      <h3>Sign Language Recognition</h3>
+      <p>AI-based gesture recognition system to aid communication for the speech and hearing-impaired using computer vision and ML.</p>
+    </div>
+  </div>
+</section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+      <form id="contact-form">
+       <input type="text" name="name" placeholder="Your Name" required />
+       <input type="email" name="email" placeholder="Your Email" required />
+       <textarea name="message" placeholder="Your Message" required></textarea>
+       <button type="submit">Send</button>
+      </form>
+    <div id="form-status"></div>
+    <div class="social-logos">
+      <a href="https://www.linkedin.com/in/vedulasrivalli" target="_blank">
+         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn Logo">
+      </a>
+      <a href="https://github.com/VedulaSrivalli" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo">
+      </a>
+      <a href="https://www.instagram.com/vedulasrivalli" target="_blank" aria-label="Instagram">
+  	<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" style="width:24px;height:24px;">
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Vedula Srivalli</p>
+  </footer>
+
+  <!-- EmailJS Script -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script>
+  // Initialize EmailJS
+  (function () {
+    emailjs.init("dIN2khnbp2_mwGYDf"); // Replace with your actual Public Key
+  })();
+
+  // Typing animation logic
+  const phrases = ["Web Developer", "AI Enthusiast", "Tech Explorer"];
+  let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+  const typed = document.getElementById("typed-text");
+
+  function typeLoop() {
+    typed.textContent = currentPhrase.join("");
+    if (i < phrases.length) {
+      if (!isDeleting && j <= phrases[i].length) {
+        currentPhrase.push(phrases[i][j]);
+        j++;
+      }
+      if (isDeleting && j > 0) {
+        currentPhrase.pop();
+        j--;
+      }
+      if (j === phrases[i].length) isDeleting = true;
+      if (isDeleting && j === 0) {
+        isDeleting = false;
+        i++;
+        if (i === phrases.length) i = 0;
+      }
+    }
+    setTimeout(typeLoop, 150);
+  }
+  typeLoop();
+
+  // Theme toggle logic
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
+
+  // Contact form submit with EmailJS
+  document.getElementById("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    emailjs.sendForm("service_ubecdv9", "template_ihmsgdj", this)
+      .then(function () {
+        alert("Message sent successfully!");
+      }, function (error) {
+        alert("Failed to send message. Please try again.");
+        console.log(error);
+      });
+
+    this.reset();
+  });
+  </script>
+
+
+</body>
+</html>
